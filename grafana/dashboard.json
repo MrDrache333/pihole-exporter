@@ -1,8 +1,8 @@
 {
   "__inputs": [
     {
-      "name": "DS_PROMETHEUS",
-      "label": "Prometheus",
+      "name": "DS_MAC_MINI",
+      "label": "MAC MINI",
       "description": "",
       "type": "datasource",
       "pluginId": "prometheus",
@@ -20,13 +20,13 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "6.2.1"
+      "version": "7.2.2"
     },
     {
       "type": "panel",
       "id": "grafana-piechart-panel",
       "name": "Pie Chart",
-      "version": "1.3.6"
+      "version": "1.6.2"
     },
     {
       "type": "panel",
@@ -48,6 +48,12 @@
     },
     {
       "type": "panel",
+      "id": "stat",
+      "name": "Stat",
+      "version": ""
+    },
+    {
+      "type": "panel",
       "id": "table",
       "name": "Table",
       "version": ""
@@ -57,7 +63,7 @@
     "list": [
       {
         "builtIn": 1,
-        "datasource": "${DS_PROMETHEUS}",
+        "datasource": "${DS_MAC_MINI}",
         "enable": true,
         "hide": true,
         "iconColor": "rgba(0, 211, 255, 1)",
@@ -68,16 +74,16 @@
     ]
   },
   "description": "This is a PI-Hole dashboard when using the https://github.com/eko/pihole-exporter Prometheus exporter",
-  "editable": true,
+  "editable": false,
   "gnetId": 10176,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1609280899627,
+  "iteration": 1642370694936,
   "links": [],
   "panels": [
     {
       "collapsed": false,
-      "datasource": null,
+      "datasource": "${DS_MAC_MINI}",
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -86,34 +92,48 @@
       },
       "id": 60,
       "panels": [],
+      "repeat": null,
       "title": "🍓PI-Hole",
       "type": "row"
     },
     {
       "cacheTimeout": null,
-      "colorBackground": true,
-      "colorPostfix": false,
-      "colorPrefix": false,
-      "colorValue": false,
-      "colors": [
-        "#d44a3a",
-        "rgba(237, 129, 40, 0.89)",
-        "#299c46"
-      ],
-      "datasource": "${DS_PROMETHEUS}",
+      "datasource": "${DS_MAC_MINI}",
       "fieldConfig": {
         "defaults": {
-          "custom": {}
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {},
+          "mappings": [
+            {
+              "from": "",
+              "id": 1,
+              "text": "Enabled",
+              "to": "",
+              "type": 1,
+              "value": "1"
+            },
+            {
+              "from": "",
+              "id": 2,
+              "text": "Disabled",
+              "to": "",
+              "type": 1,
+              "value": "0"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
         },
         "overrides": []
-      },
-      "format": "none",
-      "gauge": {
-        "maxValue": 100,
-        "minValue": 0,
-        "show": false,
-        "thresholdLabels": false,
-        "thresholdMarkers": true
       },
       "gridPos": {
         "h": 2,
@@ -124,67 +144,38 @@
       "id": 84,
       "interval": null,
       "links": [],
-      "mappingType": 1,
-      "mappingTypes": [
-        {
-          "name": "value to text",
-          "value": 1
-        },
-        {
-          "name": "range to text",
-          "value": 2
-        }
-      ],
       "maxDataPoints": 100,
-      "nullPointMode": "connected",
-      "nullText": null,
-      "postfix": "",
-      "postfixFontSize": "50%",
-      "prefix": "",
-      "prefixFontSize": "50%",
-      "rangeMaps": [
-        {
-          "from": "null",
-          "text": "N/A",
-          "to": "null"
-        }
-      ],
-      "sparkline": {
-        "fillColor": "rgba(31, 118, 189, 0.18)",
-        "full": false,
-        "lineColor": "rgb(31, 120, 193)",
-        "show": false
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {},
+        "textMode": "auto"
       },
-      "tableColumn": "",
+      "pluginVersion": "7.2.2",
       "targets": [
         {
-          "expr": "pihole_status{hostname=~'$node'}",
-          "instant": true,
+          "expr": "pihole_status{instance=~\"$host\"}",
+          "format": "time_series",
           "interval": "",
-          "legendFormat": "{{ legend }}",
+          "intervalFactor": 1,
+          "legendFormat": "{{ instance  }}",
           "refId": "A"
         }
       ],
-      "thresholds": "0,1",
       "timeFrom": null,
       "timeShift": null,
       "title": "Status",
       "transparent": true,
-      "type": "singlestat",
-      "valueFontSize": "80%",
-      "valueMaps": [
-        {
-          "op": "=",
-          "text": "Disabled",
-          "value": "0"
-        },
-        {
-          "op": "=",
-          "text": "Enabled",
-          "value": "1"
-        }
-      ],
-      "valueName": "current"
+      "type": "stat"
     },
     {
       "cacheTimeout": null,
@@ -196,7 +187,7 @@
         "rgba(237, 129, 40, 0.89)",
         "#d44a3a"
       ],
-      "datasource": "${DS_PROMETHEUS}",
+      "datasource": "${DS_MAC_MINI}",
       "decimals": null,
       "fieldConfig": {
         "defaults": {
@@ -255,9 +246,10 @@
       "tableColumn": "",
       "targets": [
         {
-          "expr": "pihole_domains_being_blocked{hostname=~'$node'}",
-          "instant": false,
+          "expr": "sum(pihole_domains_being_blocked{instance=~\"$host\"})",
+          "format": "time_series",
           "interval": "",
+          "intervalFactor": 1,
           "legendFormat": "",
           "refId": "A"
         }
@@ -265,7 +257,7 @@
       "thresholds": "",
       "timeFrom": null,
       "timeShift": null,
-      "title": "Domains being blocked",
+      "title": "Total domains being blocked",
       "transparent": true,
       "type": "singlestat",
       "valueFontSize": "80%",
@@ -287,7 +279,7 @@
         "rgba(237, 129, 40, 0.89)",
         "#d44a3a"
       ],
-      "datasource": "${DS_PROMETHEUS}",
+      "datasource": "${DS_MAC_MINI}",
       "fieldConfig": {
         "defaults": {
           "custom": {}
@@ -345,8 +337,10 @@
       "tableColumn": "",
       "targets": [
         {
-          "expr": "pihole_unique_domains{hostname=~'$node'}",
+          "expr": "sum(pihole_unique_domains{instance=~\"$host\"})",
+          "format": "time_series",
           "interval": "",
+          "intervalFactor": 1,
           "legendFormat": "",
           "refId": "A"
         }
@@ -375,7 +369,7 @@
         "label": "Others",
         "threshold": 0
       },
-      "datasource": "${DS_PROMETHEUS}",
+      "datasource": "${DS_MAC_MINI}",
       "fieldConfig": {
         "defaults": {
           "custom": {}
@@ -405,9 +399,10 @@
       "strokeWidth": 1,
       "targets": [
         {
-          "expr": "pihole_top_queries{hostname=~'$node'}",
-          "instant": true,
+          "expr": "sum by (domain)(pihole_top_queries{instance=~\"$host\"})",
+          "format": "time_series",
           "interval": "",
+          "intervalFactor": 1,
           "legendFormat": "{{ domain }}",
           "refId": "A"
         }
@@ -427,7 +422,7 @@
         "label": "Others",
         "threshold": 0
       },
-      "datasource": "${DS_PROMETHEUS}",
+      "datasource": "${DS_MAC_MINI}",
       "fieldConfig": {
         "defaults": {
           "custom": {}
@@ -458,8 +453,10 @@
       "strokeWidth": 1,
       "targets": [
         {
-          "expr": "pihole_reply{hostname='$node'}",
+          "expr": "sum by (type)(pihole_reply{instance=~\"$host\"})",
+          "format": "time_series",
           "interval": "",
+          "intervalFactor": 1,
           "legendFormat": "{{ type }}",
           "refId": "A"
         }
@@ -479,7 +476,7 @@
         "label": "Others",
         "threshold": 0
       },
-      "datasource": "${DS_PROMETHEUS}",
+      "datasource": "${DS_MAC_MINI}",
       "fieldConfig": {
         "defaults": {
           "custom": {}
@@ -508,8 +505,10 @@
       "strokeWidth": 1,
       "targets": [
         {
-          "expr": "pihole_top_ads{hostname=~'$node'}",
+          "expr": "sum by (domain)(pihole_top_ads{instance=~\"$host\"})",
+          "format": "time_series",
           "interval": "",
+          "intervalFactor": 1,
           "legendFormat": "{{ domain }}",
           "refId": "A"
         }
@@ -528,27 +527,10 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_PROMETHEUS}",
+      "datasource": "${DS_MAC_MINI}",
       "fieldConfig": {
         "defaults": {
-          "custom": {
-            "align": null,
-            "filterable": false
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          }
+          "custom": {}
         },
         "overrides": []
       },
@@ -579,7 +561,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.2.0",
+      "pluginVersion": "7.2.2",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -589,9 +571,11 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "pihole_dns_queries_all_types{hostname=~'$node'}",
+          "expr": "pihole_dns_queries_all_types{instance=~\"$host\"}",
+          "format": "time_series",
           "interval": "",
-          "legendFormat": "{{ job }}",
+          "intervalFactor": 1,
+          "legendFormat": "{{ instance }}",
           "refId": "A"
         }
       ],
@@ -639,7 +623,7 @@
     },
     {
       "cacheTimeout": null,
-      "datasource": "${DS_PROMETHEUS}",
+      "datasource": "${DS_MAC_MINI}",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -692,15 +676,17 @@
           "values": false
         },
         "showThresholdLabels": false,
-        "showThresholdMarkers": true
+        "showThresholdMarkers": true,
+        "text": {}
       },
-      "pluginVersion": "7.2.0",
+      "pluginVersion": "7.2.2",
       "targets": [
         {
-          "expr": "pihole_ads_percentage_today{hostname=~'$node'}",
-          "instant": false,
+          "expr": "pihole_ads_percentage_today",
+          "format": "time_series",
           "interval": "",
-          "legendFormat": "",
+          "intervalFactor": 1,
+          "legendFormat": "{{ instance }}",
           "refId": "A"
         }
       ],
@@ -717,7 +703,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_PROMETHEUS}",
+      "datasource": "${DS_MAC_MINI}",
       "fieldConfig": {
         "defaults": {
           "custom": {}
@@ -752,7 +738,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.2.0",
+      "pluginVersion": "7.2.2",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -762,10 +748,11 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "pihole_ads_blocked_today{hostname=~'$node'}",
-          "instant": false,
+          "expr": "pihole_ads_blocked_today{instance=~\"$host\"}",
+          "format": "time_series",
           "interval": "",
-          "legendFormat": "{{ job }}",
+          "intervalFactor": 1,
+          "legendFormat": "{{ instance }}",
           "refId": "A"
         }
       ],
@@ -816,7 +803,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_PROMETHEUS}",
+      "datasource": "${DS_MAC_MINI}",
       "fieldConfig": {
         "defaults": {
           "custom": {}
@@ -850,7 +837,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.2.0",
+      "pluginVersion": "7.2.2",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -860,15 +847,19 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "pihole_queries_cached{hostname=~'$node'}",
+          "expr": "sum(pihole_queries_cached{instance=~\"$host\"})",
+          "format": "time_series",
           "interval": "",
-          "legendFormat": "Queries cached",
+          "intervalFactor": 1,
+          "legendFormat": "Total queries cached",
           "refId": "A"
         },
         {
-          "expr": "pihole_queries_forwarded{hostname=~'$node'}",
+          "expr": "sum(pihole_queries_forwarded{instance=~\"$host\"})",
+          "format": "time_series",
           "interval": "",
-          "legendFormat": "Queries forwarded",
+          "intervalFactor": 1,
+          "legendFormat": "Total queries forwarded",
           "refId": "B"
         }
       ],
@@ -919,7 +910,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_PROMETHEUS}",
+      "datasource": "${DS_MAC_MINI}",
       "fieldConfig": {
         "defaults": {
           "custom": {}
@@ -953,7 +944,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.2.0",
+      "pluginVersion": "7.2.2",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -963,8 +954,10 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "pihole_querytypes",
+          "expr": "sum by (type)(pihole_querytypes{instance=~\"$host\"})",
+          "format": "time_series",
           "interval": "",
+          "intervalFactor": 1,
           "legendFormat": "{{ type }}",
           "refId": "A"
         }
@@ -1018,7 +1011,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_PROMETHEUS}",
+      "datasource": "${DS_MAC_MINI}",
       "fieldConfig": {
         "defaults": {
           "custom": {}
@@ -1052,7 +1045,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.2.0",
+      "pluginVersion": "7.2.2",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -1063,8 +1056,10 @@
       "targets": [
         {
           "expr": "pihole_ads_percentage_today",
+          "format": "time_series",
           "interval": "",
-          "legendFormat": "{{ job }}",
+          "intervalFactor": 1,
+          "legendFormat": "{{ instance }}",
           "refId": "A"
         }
       ],
@@ -1111,15 +1106,58 @@
       }
     },
     {
-      "columns": [],
-      "datasource": "${DS_PROMETHEUS}",
+      "datasource": "${DS_MAC_MINI}",
       "fieldConfig": {
         "defaults": {
-          "custom": {}
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": null,
+            "filterable": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
         },
-        "overrides": []
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Time"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "short"
+              },
+              {
+                "id": "decimals",
+                "value": 2
+              },
+              {
+                "id": "unit",
+                "value": "time: YYYY-MM-DD HH:mm:ss"
+              },
+              {
+                "id": "custom.align",
+                "value": null
+              }
+            ]
+          }
+        ]
       },
-      "fontSize": "100%",
       "gridPos": {
         "h": 5,
         "w": 8,
@@ -1128,38 +1166,16 @@
       },
       "id": 74,
       "links": [],
-      "pageSize": null,
-      "scroll": true,
-      "showHeader": true,
-      "sort": {
-        "col": 2,
-        "desc": true
+      "options": {
+        "showHeader": true
       },
-      "styles": [
-        {
-          "alias": "",
-          "align": "auto",
-          "colorMode": null,
-          "colors": [
-            "rgba(245, 54, 54, 0.9)",
-            "rgba(237, 129, 40, 0.89)",
-            "rgba(50, 172, 45, 0.97)"
-          ],
-          "dateFormat": "YYYY-MM-DD HH:mm:ss",
-          "decimals": 2,
-          "link": false,
-          "mappingType": 1,
-          "pattern": "Time",
-          "thresholds": [],
-          "type": "date",
-          "unit": "short"
-        }
-      ],
+      "pluginVersion": "7.2.2",
       "targets": [
         {
-          "expr": "topk(15, pihole_top_queries)",
-          "instant": true,
-          "interval": "30s",
+          "expr": "sum by (domain)(pihole_top_queries{instance=~\"$host\"})",
+          "format": "time_series",
+          "instant": false,
+          "interval": "",
           "intervalFactor": 1,
           "legendFormat": "{{ domain }}",
           "refId": "A"
@@ -1168,20 +1184,69 @@
       "timeFrom": null,
       "timeShift": null,
       "title": "Top queries",
-      "transform": "timeseries_to_rows",
+      "transformations": [
+        {
+          "id": "seriesToRows",
+          "options": {
+            "reducers": []
+          }
+        }
+      ],
       "transparent": true,
-      "type": "table-old"
+      "type": "table"
     },
     {
-      "columns": [],
-      "datasource": "${DS_PROMETHEUS}",
+      "datasource": "${DS_MAC_MINI}",
       "fieldConfig": {
         "defaults": {
-          "custom": {}
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": null,
+            "filterable": false
+          },
+          "decimals": 2,
+          "displayName": "",
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "short"
         },
-        "overrides": []
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Time"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Time"
+              },
+              {
+                "id": "unit",
+                "value": "time: YYYY-MM-DD HH:mm:ss"
+              },
+              {
+                "id": "custom.align",
+                "value": null
+              }
+            ]
+          }
+        ]
       },
-      "fontSize": "100%",
       "gridPos": {
         "h": 5,
         "w": 8,
@@ -1190,42 +1255,16 @@
       },
       "id": 90,
       "links": [],
-      "pageSize": null,
-      "scroll": true,
-      "showHeader": true,
-      "sort": {
-        "col": 2,
-        "desc": true
+      "options": {
+        "showHeader": true
       },
-      "styles": [
-        {
-          "alias": "Time",
-          "align": "auto",
-          "dateFormat": "YYYY-MM-DD HH:mm:ss",
-          "pattern": "Time",
-          "type": "date"
-        },
-        {
-          "alias": "",
-          "align": "auto",
-          "colorMode": null,
-          "colors": [
-            "rgba(245, 54, 54, 0.9)",
-            "rgba(237, 129, 40, 0.89)",
-            "rgba(50, 172, 45, 0.97)"
-          ],
-          "decimals": 2,
-          "pattern": "/.*/",
-          "thresholds": [],
-          "type": "number",
-          "unit": "short"
-        }
-      ],
+      "pluginVersion": "7.2.2",
       "targets": [
         {
-          "expr": "topk(15, pihole_top_ads)",
-          "instant": true,
+          "expr": "sum by (domain)(pihole_top_ads{instance=~\"$host\"})",
+          "format": "time_series",
           "interval": "",
+          "intervalFactor": 1,
           "legendFormat": "{{ domain }}",
           "refId": "A"
         }
@@ -1233,16 +1272,23 @@
       "timeFrom": null,
       "timeShift": null,
       "title": "Top ads domains",
-      "transform": "timeseries_to_rows",
+      "transformations": [
+        {
+          "id": "seriesToRows",
+          "options": {
+            "reducers": []
+          }
+        }
+      ],
       "transparent": true,
-      "type": "table-old"
+      "type": "table"
     },
     {
       "aliasColors": {},
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_PROMETHEUS}",
+      "datasource": "${DS_MAC_MINI}",
       "fieldConfig": {
         "defaults": {
           "custom": {}
@@ -1260,12 +1306,10 @@
       "hiddenSeries": false,
       "id": 88,
       "legend": {
-        "alignAsTable": false,
         "avg": false,
         "current": false,
         "max": false,
         "min": false,
-        "rightSide": false,
         "show": false,
         "total": false,
         "values": false
@@ -1278,23 +1322,20 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.2.0",
+      "pluginVersion": "7.2.2",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
-      "seriesOverrides": [
-        {
-          "alias": "pihole_unique_clients{hostname=\\\"127.0.0.1\\\",instance=\\\"localhost:9311\\\",job=\\\"pihole\\\"}",
-          "color": "#E0B400"
-        }
-      ],
+      "seriesOverrides": [],
       "spaceLength": 10,
       "stack": false,
       "steppedLine": false,
       "targets": [
         {
-          "expr": "pihole_forward_destinations{hostname=~'$node'}",
+          "expr": "sum by (destination)(pihole_forward_destinations{instance=~\"$host\"})",
+          "format": "time_series",
           "interval": "",
+          "intervalFactor": 1,
           "legendFormat": "{{ destination }}",
           "refId": "A"
         }
@@ -1306,7 +1347,7 @@
       "title": "Forward destinations",
       "tooltip": {
         "shared": true,
-        "sort": 2,
+        "sort": 0,
         "value_type": "individual"
       },
       "transparent": true,
@@ -1342,31 +1383,17 @@
       }
     },
     {
-      "aliasColors": {},
-      "bars": false,
+      "aliasColors": {
+        "pihole_unique_clients{hostname=\"127.0.0.1\",instance=\"localhost:9311\",job=\"pihole\"}": "rgb(255, 255, 255)",
+        "pihole_unique_domains{hostname=\"127.0.0.1\",instance=\"localhost:9311\",job=\"pihole\"}": "super-light-yellow"
+      },
+      "bars": true,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_PROMETHEUS}",
+      "datasource": "${DS_MAC_MINI}",
       "fieldConfig": {
         "defaults": {
-          "custom": {
-            "align": null,
-            "filterable": false
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          }
+          "custom": {}
         },
         "overrides": []
       },
@@ -1385,11 +1412,11 @@
         "current": false,
         "max": false,
         "min": false,
-        "show": true,
+        "show": false,
         "total": false,
         "values": false
       },
-      "lines": true,
+      "lines": false,
       "linewidth": 1,
       "links": [],
       "nullPointMode": "null",
@@ -1397,7 +1424,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.2.0",
+      "pluginVersion": "7.2.2",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -1407,9 +1434,11 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "pihole_unique_clients{hostname=~'$node'}",
+          "expr": "pihole_unique_clients{instance=~\"$host\"}",
+          "format": "time_series",
           "interval": "",
-          "legendFormat": "{{ hostname }}",
+          "intervalFactor": 1,
+          "legendFormat": "{{ instance }}",
           "refId": "A"
         }
       ],
@@ -1434,6 +1463,7 @@
       },
       "yaxes": [
         {
+          "decimals": 0,
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -1456,7 +1486,7 @@
       }
     }
   ],
-  "refresh": false,
+  "refresh": "30s",
   "schemaVersion": 26,
   "style": "dark",
   "tags": [],
@@ -1464,20 +1494,42 @@
     "list": [
       {
         "allValue": null,
-        "current": {
-          "selected": false,
-          "text": "10.10.200.20",
-          "value": "10.10.200.20"
-        },
-        "datasource": "${DS_PROMETHEUS}",
-        "definition": "label_values(pihole_ads_blocked_today, hostname)",
-        "hide": 0,
-        "includeAll": false,
+        "current": {},
+        "datasource": "${DS_MAC_MINI}",
+        "definition": "label_values(pihole_status,job)",
+        "description": null,
+        "error": null,
+        "hide": 2,
+        "includeAll": true,
         "label": null,
         "multi": false,
-        "name": "node",
+        "name": "job",
         "options": [],
-        "query": "label_values(pihole_ads_blocked_today, hostname)",
+        "query": "label_values(pihole_status,job)",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {},
+        "datasource": "${DS_MAC_MINI}",
+        "definition": "label_values(pihole_status{job=~\"$job\"},instance)",
+        "description": null,
+        "error": null,
+        "hide": 0,
+        "includeAll": false,
+        "label": "Host:",
+        "multi": true,
+        "name": "host",
+        "options": [],
+        "query": "label_values(pihole_status{job=~\"$job\"},instance)",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
@@ -1491,7 +1543,7 @@
     ]
   },
   "time": {
-    "from": "now-30m",
+    "from": "now-6h",
     "to": "now"
   },
   "timepicker": {
@@ -1523,6 +1575,6 @@
   },
   "timezone": "",
   "title": "PI-Hole Exporter",
-  "uid": "PI-Hole-Exporter",
-  "version": 31
+  "uid": "MIBVglomgfdsfs",
+  "version": 4
 }
